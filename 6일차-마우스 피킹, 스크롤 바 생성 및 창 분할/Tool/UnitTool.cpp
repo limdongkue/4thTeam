@@ -22,6 +22,14 @@ CUnitTool::CUnitTool(CWnd* pParent /*=NULL*/)
 
 CUnitTool::~CUnitTool()
 {
+	//// m_mapUnitData의 모든 요소 해제
+	//for (auto& pair : m_mapUnitData) {
+	//	delete pair.second;
+	//}
+	//m_mapUnitData.clear();
+
+	//// m_ListBox의 모든 아이템 삭제
+	//m_ListBox.ResetContent();
 }
 
 void CUnitTool::DoDataExchange(CDataExchange* pDX)
@@ -40,7 +48,12 @@ void CUnitTool::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CUnitTool, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &CUnitTool::OnPush)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CUnitTool::OnListBox)
+	ON_BN_CLICKED(IDC_BUTTON2, &CUnitTool::OnSave)
+	ON_BN_CLICKED(IDC_BUTTON3, &CUnitTool::OnLoad)
+	ON_BN_CLICKED(IDC_BUTTON4, &CUnitTool::OnDelete)
+
 	ON_WM_DESTROY()
+
 END_MESSAGE_MAP()
 
 
@@ -117,5 +130,123 @@ void CUnitTool::OnDestroy()
 
 	for_each(m_mapUnitData.begin(), m_mapUnitData.end(), CDeleteMap());
 	m_mapUnitData.clear();
+
+	m_ListBox.ResetContent();
 }
 
+
+
+void CUnitTool::OnSave()
+{
+
+	HANDLE hFile = CreateFile(L"../Data/Player.dat",
+		GENERIC_WRITE,
+		0,
+		nullptr,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		nullptr);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		AfxMessageBox(L"Save Failed");
+		return;
+	}
+
+	DWORD dwByte = 0;
+	DWORD dwStringSize = 0;
+
+	for (auto& Pair : m_mapUnitData)
+	{
+		dwStringSize = sizeof(wchar_t) * (Pair.second->strName.GetLength() + 1);
+		WriteFile(hFile, &dwStringSize, sizeof(DWORD), &dwByte, nullptr);
+		WriteFile(hFile, Pair.second->strName.GetString(), dwStringSize, &dwByte, nullptr);
+		WriteFile(hFile, &Pair.second->iAttack, sizeof(int), &dwByte, nullptr);
+		WriteFile(hFile, &Pair.second->iHp, sizeof(int), &dwByte, nullptr);
+		WriteFile(hFile, &Pair.second->byJobIndex, sizeof(int), &dwByte, nullptr);
+	}
+
+	CloseHandle(hFile);
+
+	AfxMessageBox(L"Save Successful");
+
+}
+
+
+void CUnitTool::OnLoad()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	HANDLE hFile = CreateFile(L"../Data/Player.dat",
+		GENERIC_READ,
+		0,
+		nullptr,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		nullptr);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		AfxMessageBox(L"Load Failed");
+		return;
+	}
+
+	DWORD dwByte = 0;
+	DWORD dwStringSize = 0;
+	UNITDATA* pUnit = nullptr;
+
+	while (true)
+	{
+		pUnit = new UNITDATA;
+		ReadFile(hFile, &dwStringSize, sizeof(DWORD), &dwByte, nullptr);
+
+		wchar_t pTemp[MAX_PATH];
+
+		ReadFile(hFile, pTemp, dwStringSize, &dwByte, nullptr);
+		ReadFile(hFile, &pUnit->iAttack, sizeof(int), &dwByte, nullptr);
+		ReadFile(hFile, &pUnit->iHp, sizeof(int), &dwByte, nullptr);
+		ReadFile(hFile, &pUnit->byJobIndex, sizeof(int), &dwByte, nullptr);
+
+		if (0 == dwByte)
+		{
+			Safe_Delete<UNITDATA*>(pUnit);
+			break;
+		}
+
+		pUnit->strName = pTemp;
+		m_mapUnitData.insert({ pUnit->strName, pUnit });
+		m_ListBox.AddString(pUnit->strName);
+	}
+
+	CloseHandle(hFile);
+
+	AfxMessageBox(L"Load Successful");
+
+}
+
+
+void CUnitTool::OnDelete()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+
+	int iIndex = m_ListBox.GetCurSel(); // 현재 리스트 박스의 인덱스 반환
+
+	if (-1 == iIndex)
+		return;
+
+	CString wstrName;
+	m_ListBox.GetText(iIndex, wstrName);
+	// GetText : 현재 인덱스에 해당하는 문자열을 얻어오기
+
+	auto iter = m_mapUnitData.find(wstrName); // 삭제할 키 값 찾기
+	
+	if (iter == m_mapUnitData.end())
+		return;
+
+	Safe_Delete(iter->second); // 찾은 키 값의 Value 삭제
+	m_mapUnitData.erase(wstrName); // erase
+	m_ListBox.DeleteString(iIndex); // list박스 인덱스 삭제
+
+	UpdateData(FALSE);
+}

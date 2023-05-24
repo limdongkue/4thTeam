@@ -39,4 +39,7 @@ public:
 public:
 	map<CString, UNITDATA*>		m_mapUnitData;
 
+	afx_msg void OnSave();
+	afx_msg void OnLoad();
+	afx_msg void OnDelete();
 };

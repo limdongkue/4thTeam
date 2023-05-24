@@ -75,6 +75,7 @@ HRESULT CDevice::Initialize(void)
 		return E_FAIL;
 	}
 
+	int a = 0;
 
 	return S_OK;
 }

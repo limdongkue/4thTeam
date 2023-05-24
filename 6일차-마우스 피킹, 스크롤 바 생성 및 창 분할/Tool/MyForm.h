@@ -1,5 +1,5 @@
 #pragma once
-
+#include "UnitTool.h"
 
 
 // CMyForm 폼 뷰입니다.
@@ -27,6 +27,16 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+	afx_msg void OnUnitTool();
+
+private:
+	CFont	m_Font;
+	CUnitTool	m_UnitTool;
+	
+public:
+	virtual void OnInitialUpdate();
 };
 
 

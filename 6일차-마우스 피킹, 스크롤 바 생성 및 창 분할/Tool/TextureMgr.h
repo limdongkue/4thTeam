@@ -5,11 +5,9 @@
 
 class CTextureMgr
 {
-	DECLARE_SINGLETON(CTextureMgr)
+	SINGLETON(CTextureMgr)
 
 private:
-	CTextureMgr();
-	~CTextureMgr();
 
 public:
 	const TEXINFO*		Get_Texture(const TCHAR* pObjKey,

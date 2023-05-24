@@ -20,16 +20,8 @@ public:
 #endif
 #endif
 
-	void		Set_Ter(CToolView* p_P)
-	{
-		m_pTer = p_P;
-	}
-
 protected:
 	DECLARE_MESSAGE_MAP()
-
-	CToolView*	m_pTer;
-
 };
 
 

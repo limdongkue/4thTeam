@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Device.h"
 
-IMPLEMENT_SINGLETON(CDevice)
 
 CDevice::CDevice()
 	: m_pSDK(nullptr), m_pDevice(nullptr), m_pSprite(nullptr)

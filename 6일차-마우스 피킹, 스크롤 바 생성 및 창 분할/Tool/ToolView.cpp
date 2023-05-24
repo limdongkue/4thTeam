@@ -38,7 +38,7 @@ END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
 
-CToolView::CToolView() : m_pTerrain(nullptr), m_pMiniMap(nullptr)
+CToolView::CToolView() : m_pTerrain(nullptr)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -136,8 +136,6 @@ void CToolView::OnDestroy()
 
 	Safe_Delete(m_pTerrain);
 
-	CTextureMgr::Get_Instance()->Destroy_Instance();
-	CDevice::Get_Instance()->Destroy_Instance();
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
@@ -212,6 +210,12 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	// 인자가 TRUE : WM_PAINT와 WM_ERASEBKGND 메세지를 발생
 	
 	Invalidate(FALSE);
+
+	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
+
+	pMiniView->Invalidate(FALSE);
+
 }
 
 
@@ -225,8 +229,11 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, 0);
 		Invalidate(FALSE);
+
+		CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+		CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
+		pMiniView->Invalidate(FALSE);
 	
-		m_pMiniMap->Invalidate(FALSE);
 	}
 
 

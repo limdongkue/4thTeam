@@ -33,11 +33,14 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
+
+public:
+	CSplitterWnd	  m_MainSplitter;
+	CSplitterWnd	  m_SecondSplitter;
+
 protected:  // 컨트롤 모음이 포함된 멤버입니다.
 	CToolBar          m_wndToolBar;
 	CStatusBar        m_wndStatusBar;
-	CSplitterWnd	  m_MainSplitter;
-	CSplitterWnd	  m_SecondSplitter;
 
 // 생성된 메시지 맵 함수
 protected:

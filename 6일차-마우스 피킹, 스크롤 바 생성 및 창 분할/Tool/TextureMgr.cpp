@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TextureMgr.h"
 
-IMPLEMENT_SINGLETON(CTextureMgr)
+
 
 CTextureMgr::CTextureMgr()
 {

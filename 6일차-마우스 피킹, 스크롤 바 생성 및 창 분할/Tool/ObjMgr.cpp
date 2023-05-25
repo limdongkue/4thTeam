@@ -49,4 +49,3 @@ void CObjMgr::Add_Object(OBJID p_ID, CObj * p_Obj)
 	m_LastAddedList.push_back(p_Obj);
 }
 
-IMPLEMENT_SINGLETON(CObjMgr);

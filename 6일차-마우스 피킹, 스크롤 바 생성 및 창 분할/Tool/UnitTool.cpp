@@ -63,8 +63,18 @@ END_MESSAGE_MAP()
 
 void CUnitTool::OnPush()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
 	UpdateData(TRUE);
+
+	if (m_mapUnitData.find(m_strName) != m_mapUnitData.end())
+	{
+		UpdateData(FALSE);
+		return;
+
+	}
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+
 
 	UNITDATA*	pUnit = new UNITDATA;
 
@@ -85,6 +95,8 @@ void CUnitTool::OnPush()
 	m_mapUnitData.insert({ pUnit->strName, pUnit });
 
 	UpdateData(FALSE);
+
+	m_ListBox.SelectString(0, pUnit->strName);
 
 }
 
@@ -177,6 +189,8 @@ void CUnitTool::OnLoad()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
+	m_ListBox.ResetContent();
+
 	HANDLE hFile = CreateFile(L"../Data/Player.dat",
 		GENERIC_READ,
 		0,
@@ -222,6 +236,39 @@ void CUnitTool::OnLoad()
 
 	AfxMessageBox(L"Load Successful");
 
+	m_ListBox.SelectString(0, m_mapUnitData.begin()->first);
+
+	UpdateData(TRUE);
+
+	CString		strSelectName;
+
+	// GetCurSel : 현재 리스트 박스에서 선택된 목록의 인덱스를 반환
+	int		iSelect = m_ListBox.GetCurSel();
+
+	if (-1 == iSelect)
+		return;
+
+	// GetText : 현재 인덱스에 해당하는 문자열을 얻어오는 함수
+	m_ListBox.GetText(iSelect, strSelectName);
+
+	auto	iter = m_mapUnitData.find(strSelectName);
+
+	if (iter == m_mapUnitData.end())
+		return;
+
+	m_strName = iter->second->strName;
+	m_iHp = iter->second->iHp;
+	m_iAttack = iter->second->iAttack;
+
+	for (int i = 0; i < 3; ++i)
+		m_Radio[i].SetCheck(FALSE);
+
+	m_Radio[iter->second->byJobIndex].SetCheck(TRUE);
+
+	UpdateData(FALSE);
+
+
+
 }
 
 
@@ -250,3 +297,5 @@ void CUnitTool::OnDelete()
 
 	UpdateData(FALSE);
 }
+
+

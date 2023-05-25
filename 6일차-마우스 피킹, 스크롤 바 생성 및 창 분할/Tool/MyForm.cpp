@@ -38,6 +38,7 @@ void CMyForm::OnUnitTool()
 		m_UnitTool.Create(IDD_UNITTOOL);
 
 	m_UnitTool.ShowWindow(SW_SHOW);
+	m_UnitTool.m_Radio[0].SetCheck(TRUE);
 }
 
 

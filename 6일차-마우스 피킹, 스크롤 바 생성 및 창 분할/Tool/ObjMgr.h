@@ -4,12 +4,10 @@
 
 class CObjMgr
 {
-	DECLARE_SINGLETON(CObjMgr);
+	SINGLETON(CObjMgr);
 
 
-private:
-	CObjMgr();
-	~CObjMgr();
+
 
 public:
 	int		Update();

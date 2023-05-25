@@ -122,10 +122,6 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 
 	CMiniView* pTmp = dynamic_cast<CMiniView*>(m_SecondSplitter.GetPane(0, 0));
 
-	pTmp->Set_Ter(pSrc);
-
-	pSrc->Set_Mini(pTmp);
-
-
+	
 	return TRUE;
 }

@@ -48,16 +48,9 @@ public:
 	virtual void OnInitialUpdate();
 	afx_msg void OnDestroy();
 
-	CTerrain*		Get_Ter() { return m_pTerrain; }
-	void		Set_Mini(CMiniView* p_P)
-	{
-		m_pMiniMap = p_P;
-	}
 
-
-private:
+public:
 	CTerrain*			m_pTerrain;
-	CMiniView*			m_pMiniMap;
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

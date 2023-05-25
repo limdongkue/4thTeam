@@ -12,12 +12,14 @@ public:
 public:
 	HRESULT		Initialize(void);
 	void		Update(void);
-	void		Render(float p_Size = 1.f);
+	void		Render();
+	void		Mini_Render(void);
 	void		Release(void);
 	
 
 public:
 	void		Set_MainView(CToolView* pMainView) { m_pMainView = pMainView; }
+	void		Set_Ratio(D3DXMATRIX* pOut, float fRatioX, float fRatioY);
 
 public:
 	int		Get_TileIndex(const D3DXVECTOR3& vPos);

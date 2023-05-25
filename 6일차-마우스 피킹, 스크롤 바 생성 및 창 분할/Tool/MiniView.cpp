@@ -5,12 +5,14 @@
 #include "Tool.h"
 #include "MiniView.h"
 #include "Device.h"
+#include "MainFrm.h"
+#include "ToolView.h"
 
 // CMiniView
 
 IMPLEMENT_DYNCREATE(CMiniView, CView)
 
-CMiniView::CMiniView() : m_pTer(nullptr)
+CMiniView::CMiniView()
 {
 
 }
@@ -20,7 +22,6 @@ CMiniView::~CMiniView()
 }
 
 BEGIN_MESSAGE_MAP(CMiniView, CView)
-	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -30,10 +31,18 @@ void CMiniView::OnDraw(CDC* pDC)
 {
 	CDocument* pDoc = GetDocument();
 	// TODO: 여기에 그리기 코드를 추가합니다.
+	CMainFrame* pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	CToolView*	pMiniView = dynamic_cast<CToolView*>(pMainFrm->m_MainSplitter.GetPane(0, 1));
+
+	CTerrain*	pTerrain = pMiniView->m_pTerrain;
+
+	if (nullptr == pTerrain)
+		return;
+
+	//CToolView*	pMainView = dynamic_cast<CToolView*>(pMainFrm->)
 	CDevice::Get_Instance()->Render_Begin();
 
-	if (m_pTer)
-		m_pTer->Get_Ter()->Render(0.3f);
+	pTerrain->Mini_Render();
 
 	CDevice::Get_Instance()->Render_End(m_hWnd);
 

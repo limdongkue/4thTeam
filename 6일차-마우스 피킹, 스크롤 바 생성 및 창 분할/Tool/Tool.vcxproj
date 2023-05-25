@@ -212,6 +212,7 @@
     <ClInclude Include="Tool.h" />
     <ClInclude Include="ToolDoc.h" />
     <ClInclude Include="ToolView.h" />
+    <ClInclude Include="UnitTool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Device.cpp" />
@@ -234,6 +235,7 @@
     <ClCompile Include="Tool.cpp" />
     <ClCompile Include="ToolDoc.cpp" />
     <ClCompile Include="ToolView.cpp" />
+    <ClCompile Include="UnitTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tool.rc" />

@@ -29,30 +29,18 @@
 ClassName(const ClassName&) = delete;					\
 ClassName& operator=(const ClassName&) = delete;
 
-#define DECLARE_SINGLETON(ClassName)					\
-		NO_COPY(ClassName)								\
-public :												\
-	static ClassName* Get_Instance();					\
-	static void		  Destroy_Instance();				\
-private:												\
-	static ClassName* m_pInstance;
 
-#define IMPLEMENT_SINGLETON(ClassName)					\
-ClassName* ClassName::m_pInstance = nullptr;			\
-ClassName* ClassName::Get_Instance()					\
-{														\
-	if (nullptr == m_pInstance)							\
-		m_pInstance = new ClassName;					\
-	return m_pInstance;									\
-}														\
-void ClassName::Destroy_Instance()						\
-{														\
-	if(nullptr != m_pInstance)							\
-	{													\
-		delete m_pInstance;								\
-		m_pInstance = nullptr;							\
-	}													\
-}
+#define SINGLETON(type)\
+public:\
+	static type* Get_Instance()\
+	{\
+		static type manager;\
+		return &manager;\
+	}\
+private:\
+	type();\
+	~type();
+
 
 
 extern HWND		g_hWnd;

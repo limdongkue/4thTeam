@@ -4,11 +4,9 @@
 
 class CDevice
 {
-	DECLARE_SINGLETON(CDevice)
+	SINGLETON(CDevice);
 
 private:
-	CDevice();
-	~CDevice();
 
 	// 1. 장치를 조사할 객체 생성
 	// 2. 장치 조사(지원 수준 파악)

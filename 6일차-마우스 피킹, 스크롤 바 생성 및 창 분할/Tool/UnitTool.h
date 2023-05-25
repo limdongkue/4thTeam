@@ -26,6 +26,10 @@ public:
 	afx_msg void OnPush();
 	afx_msg void OnListBox();
 	afx_msg void OnDestroy();
+	afx_msg void OnSave();
+	afx_msg void OnLoad();
+	afx_msg void OnDelete();
+
 
 public:
 	CString m_strName;
@@ -38,8 +42,4 @@ public:
 
 public:
 	map<CString, UNITDATA*>		m_mapUnitData;
-
-	afx_msg void OnSave();
-	afx_msg void OnLoad();
-	afx_msg void OnDelete();
 };

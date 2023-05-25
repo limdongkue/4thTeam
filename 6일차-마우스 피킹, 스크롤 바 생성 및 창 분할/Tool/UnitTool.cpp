@@ -151,37 +151,66 @@ void CUnitTool::OnDestroy()
 void CUnitTool::OnSave()
 {
 
-	HANDLE hFile = CreateFile(L"../Data/Player.dat",
-		GENERIC_WRITE,
-		0,
-		nullptr,
-		CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL,
-		nullptr);
+	CFileDialog	Dlg(FALSE,
+		L"dat",
+		L"*dat",
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		L"Data Files(*.dat) | *.dat||",
+		this);
 
-	if (INVALID_HANDLE_VALUE == hFile)
+
+	TCHAR	szPath[MAX_PATH] = L"";
+
+	GetCurrentDirectory(MAX_PATH, szPath);
+
+	PathRemoveFileSpec(szPath);
+
+	lstrcat(szPath, L"\\Data");
+
+	Dlg.m_ofn.lpstrInitialDir = szPath;
+
+	if (IDOK == Dlg.DoModal())
 	{
-		AfxMessageBox(L"Save Failed");
-		return;
+		CString		strTemp = Dlg.GetPathName().GetString();
+		const TCHAR*	pGetPath = strTemp.GetString();
+
+		HANDLE hFile = CreateFile(pGetPath,
+			GENERIC_WRITE,
+			0,
+			nullptr,
+			CREATE_ALWAYS,
+			FILE_ATTRIBUTE_NORMAL,
+			nullptr);
+
+
+		if (INVALID_HANDLE_VALUE == hFile)
+		{
+			AfxMessageBox(L"Save Failed");
+			return;
+		}
+
+
+		DWORD dwByte = 0;
+		DWORD dwStringSize = 0;
+
+		for (auto& Pair : m_mapUnitData)
+		{
+			// KEY 값 저장
+			dwStringSize = sizeof(wchar_t) * (Pair.second->strName.GetLength() + 1);
+			WriteFile(hFile, &dwStringSize, sizeof(DWORD), &dwByte, nullptr);
+			WriteFile(hFile, Pair.second->strName.GetString(), dwStringSize, &dwByte, nullptr);
+
+			// Value값 저장
+			WriteFile(hFile, &Pair.second->iAttack, sizeof(int), &dwByte, nullptr);
+			WriteFile(hFile, &Pair.second->iHp, sizeof(int), &dwByte, nullptr);
+			WriteFile(hFile, &Pair.second->byJobIndex, sizeof(BYTE), &dwByte, nullptr);
+			/*WriteFile(hFile, &Pair.second->byItem, sizeof(BYTE), &dwByte, nullptr);*/
+		}
+
+		CloseHandle(hFile);
 	}
-
-	DWORD dwByte = 0;
-	DWORD dwStringSize = 0;
-
-	for (auto& Pair : m_mapUnitData)
-	{
-		dwStringSize = sizeof(wchar_t) * (Pair.second->strName.GetLength() + 1);
-		WriteFile(hFile, &dwStringSize, sizeof(DWORD), &dwByte, nullptr);
-		WriteFile(hFile, Pair.second->strName.GetString(), dwStringSize, &dwByte, nullptr);
-		WriteFile(hFile, &Pair.second->iAttack, sizeof(int), &dwByte, nullptr);
-		WriteFile(hFile, &Pair.second->iHp, sizeof(int), &dwByte, nullptr);
-		WriteFile(hFile, &Pair.second->byJobIndex, sizeof(int), &dwByte, nullptr);
-	}
-
-	CloseHandle(hFile);
 
 	AfxMessageBox(L"Save Successful");
-
 }
 
 
@@ -189,56 +218,100 @@ void CUnitTool::OnLoad()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	m_ListBox.ResetContent();
+	UpdateData(TRUE);
 
-	HANDLE hFile = CreateFile(L"../Data/Player.dat",
-		GENERIC_READ,
-		0,
-		nullptr,
-		OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL,
-		nullptr);
 
-	if (INVALID_HANDLE_VALUE == hFile)
+	CFileDialog	Dlg(TRUE,
+		L"dat",
+		L"*dat",
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		L"Data Files(*.dat) | *.dat||",
+		this);
+
+
+	TCHAR	szPath[MAX_PATH] = L"";
+
+	GetCurrentDirectory(MAX_PATH, szPath);
+
+	PathRemoveFileSpec(szPath);
+
+	lstrcat(szPath, L"\\Data");
+	Dlg.m_ofn.lpstrInitialDir = szPath;
+
+	if (IDOK == Dlg.DoModal())
 	{
-		AfxMessageBox(L"Load Failed");
-		return;
-	}
+		for (auto& iter : m_mapUnitData)
+			Safe_Delete(iter.second);
 
-	DWORD dwByte = 0;
-	DWORD dwStringSize = 0;
-	UNITDATA* pUnit = nullptr;
+		m_mapUnitData.clear();
 
-	while (true)
-	{
-		pUnit = new UNITDATA;
-		ReadFile(hFile, &dwStringSize, sizeof(DWORD), &dwByte, nullptr);
+		m_ListBox.ResetContent();
 
-		wchar_t pTemp[MAX_PATH];
+		CString		strTemp = Dlg.GetPathName().GetString();
+		const TCHAR*	pGetPath = strTemp.GetString();
 
-		ReadFile(hFile, pTemp, dwStringSize, &dwByte, nullptr);
-		ReadFile(hFile, &pUnit->iAttack, sizeof(int), &dwByte, nullptr);
-		ReadFile(hFile, &pUnit->iHp, sizeof(int), &dwByte, nullptr);
-		ReadFile(hFile, &pUnit->byJobIndex, sizeof(int), &dwByte, nullptr);
+		HANDLE hFile = CreateFile(pGetPath,
+			GENERIC_READ,
+			0,
+			nullptr,
+			OPEN_EXISTING,
+			FILE_ATTRIBUTE_NORMAL,
+			nullptr);
 
-		if (0 == dwByte)
+
+		if (INVALID_HANDLE_VALUE == hFile)
 		{
-			Safe_Delete<UNITDATA*>(pUnit);
-			break;
+			AfxMessageBox(L"Load Failed");
+			return;
 		}
 
-		pUnit->strName = pTemp;
-		m_mapUnitData.insert({ pUnit->strName, pUnit });
-		m_ListBox.AddString(pUnit->strName);
+
+		DWORD dwByte = 0;
+		DWORD dwStringSize = 0;
+		UNITDATA*	pUnit = nullptr;
+
+		while(true)
+		{
+			// 키 값 불러오기
+			ReadFile(hFile, &dwStringSize, sizeof(DWORD), &dwByte, nullptr);
+
+			TCHAR* pName = new TCHAR[dwStringSize];
+			ReadFile(hFile, pName, dwStringSize, &dwByte, nullptr);
+
+			// Value값 불러오기
+			pUnit = new UNITDATA;
+
+			if (0 == dwByte)
+			{
+				Safe_Delete<UNITDATA*>(pUnit);
+
+				delete[]pName;
+				pName = nullptr;
+				break;
+			}
+
+			ReadFile(hFile, &pUnit->iAttack, sizeof(int), &dwByte, nullptr);
+			ReadFile(hFile, &pUnit->iHp, sizeof(int), &dwByte, nullptr);
+			ReadFile(hFile, &pUnit->byJobIndex, sizeof(BYTE), &dwByte, nullptr);
+			//ReadFile(hFile, &pUnit->byItem, sizeof(BYTE), &dwByte, nullptr);
+
+			pUnit->strName = pName;
+
+			delete[]pName;
+			pName = nullptr;
+
+			m_mapUnitData.insert({ pUnit->strName, pUnit });
+			m_ListBox.AddString(pUnit->strName);
+		}
+
+		CloseHandle(hFile);
 	}
 
-	CloseHandle(hFile);
+	// KEY 값 저장
 
 	AfxMessageBox(L"Load Successful");
 
 	m_ListBox.SelectString(0, m_mapUnitData.begin()->first);
-
-	UpdateData(TRUE);
 
 	CString		strSelectName;
 
@@ -279,10 +352,10 @@ void CUnitTool::OnDelete()
 
 	int iIndex = m_ListBox.GetCurSel(); // 현재 리스트 박스의 인덱스 반환
 
-	if (-1 == iIndex)
+	if (LB_ERR == iIndex)
 		return;
 
-	CString wstrName;
+	CString wstrName = L"";
 	m_ListBox.GetText(iIndex, wstrName);
 	// GetText : 현재 인덱스에 해당하는 문자열을 얻어오기
 

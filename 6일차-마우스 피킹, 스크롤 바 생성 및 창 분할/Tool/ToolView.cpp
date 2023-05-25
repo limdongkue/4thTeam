@@ -14,7 +14,7 @@
 #include "Device.h"
 #include "TextureMgr.h"
 #include "MainFrm.h"
-#include	"MiniView.h"
+#include "MiniView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,6 +1,6 @@
 #pragma once
 #include "UnitTool.h"
-
+#include "MapTool.h"
 
 // CMyForm Æû ºäÀÔ´Ï´Ù.
 
@@ -30,10 +30,13 @@ protected:
 
 public:
 	afx_msg void OnUnitTool();
+	afx_msg void OnMapTool();
+
 
 private:
 	CFont	m_Font;
 	CUnitTool	m_UnitTool;
+	CMapTool	m_MapTool;
 	
 public:
 	virtual void OnInitialUpdate();

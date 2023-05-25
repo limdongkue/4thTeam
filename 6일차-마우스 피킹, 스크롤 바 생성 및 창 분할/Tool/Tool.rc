@@ -70,7 +70,9 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\Tool.ico"
+
 IDR_ToolTYPE            ICON                    "res\\ToolDoc.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -78,6 +80,7 @@ IDR_ToolTYPE            ICON                    "res\\ToolDoc.ico"
 //
 
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -186,6 +189,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 9, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     PUSHBUTTON      "UNITTOOL",IDC_BUTTON1,7,6,82,35
+    PUSHBUTTON      "MAPTOOL",IDC_BUTTON5,7,48,82,35
 END
 
 IDD_UNITTOOL DIALOGEX 0, 0, 320, 200
@@ -208,6 +212,25 @@ BEGIN
     PUSHBUTTON      "저장하기",IDC_BUTTON2,200,13,50,14
     PUSHBUTTON      "불러오기",IDC_BUTTON3,256,13,50,14
     PUSHBUTTON      "삭제하기",IDC_BUTTON4,201,38,50,14
+END
+
+IDD_MAPTOOL DIALOGEX 0, 0, 320, 200
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_TAB1,"SysTabControl32",0x0,7,7,306,186
+END
+
+IDD_DIALOG1 DIALOGEX 0, 0, 310, 176
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
+IDD_DIALOG2 DIALOGEX 0, 0, 310, 176
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
 END
 
 
@@ -286,6 +309,31 @@ BEGIN
         HORZGUIDE, 90
         HORZGUIDE, 120
     END
+
+    IDD_MAPTOOL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+        HORZGUIDE, 18
+    END
+
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 303
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
+
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 303
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -301,6 +349,21 @@ BEGIN
 END
 
 IDD_UNITTOOL AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MAPTOOL AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG2 AFX_DIALOG_LAYOUT
 BEGIN
     0
 END

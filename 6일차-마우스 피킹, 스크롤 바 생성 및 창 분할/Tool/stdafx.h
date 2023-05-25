@@ -60,5 +60,7 @@
 #include <string>
 #include <map>
 #include <algorithm>
+#include "Enum.h"
+#include "Functor.h"
 
 using namespace std;

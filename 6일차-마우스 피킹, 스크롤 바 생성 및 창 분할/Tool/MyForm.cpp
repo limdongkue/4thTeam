@@ -27,6 +27,7 @@ void CMyForm::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMyForm::OnUnitTool)
+	ON_BN_CLICKED(IDC_BUTTON5, &CMyForm::OnMapTool)
 END_MESSAGE_MAP()
 
 
@@ -41,6 +42,14 @@ void CMyForm::OnUnitTool()
 	m_UnitTool.m_Radio[0].SetCheck(TRUE);
 }
 
+void CMyForm::OnMapTool()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (nullptr == m_MapTool.GetSafeHwnd())
+		m_MapTool.Create(IDD_MAPTOOL);
+
+	m_MapTool.ShowWindow(SW_SHOW);
+}
 
 void CMyForm::OnInitialUpdate()
 {
@@ -51,6 +60,7 @@ void CMyForm::OnInitialUpdate()
 	m_Font.CreatePointFont(150, L"궁서");
 
 	GetDlgItem(IDC_BUTTON1)->SetFont(&m_Font);
+	GetDlgItem(IDC_BUTTON5)->SetFont(&m_Font);
 }
 
 #ifdef _DEBUG
@@ -66,3 +76,5 @@ void CMyForm::Dump(CDumpContext& dc) const
 }
 #endif
 #endif //_DEBUG
+
+

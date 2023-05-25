@@ -34,6 +34,7 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
+	ON_WM_RBUTTONDOWN()
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -203,7 +204,12 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	// point : 마우스 좌표를 갖고 있음.
 
-	m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, 0);
+	int iSrc = m_pTerrain->Get_TileIndex({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f });
+
+	if (iSrc != -1)
+	{
+		m_pTerrain->Set_Index(iSrc);
+	}
 
 	// Invalidate : 호출 시 윈도우에 WM_PAINT와 WM_ERASEBKGND 메세지를 발생 시킴, 이때 OnDraw함수를 다시 한번 호출
 	// 인자가 FALSE : WM_PAINT만 발생
@@ -227,7 +233,12 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	
 	if (GetAsyncKeyState(VK_LBUTTON))
 	{
-		m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, 0);
+		int iSrc = m_pTerrain->Get_TileIndex({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f });
+
+		if (iSrc != -1)
+		{
+			m_pTerrain->Add_Index(iSrc);
+		}
 		Invalidate(FALSE);
 
 		CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
@@ -238,4 +249,21 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 
 
 
+}
+
+
+void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CScrollView::OnRButtonDown(nFlags, point);
+
+	m_pTerrain->Tile_Change();
+
+	Invalidate(FALSE);
+
+	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
+
+	pMiniView->Invalidate(FALSE);
 }

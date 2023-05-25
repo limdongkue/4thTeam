@@ -1,5 +1,6 @@
 #pragma once
 #include "UnitTool.h"
+#include "afxwin.h"
 
 
 // CMyForm Æû ºäÀÔ´Ï´Ù.
@@ -37,6 +38,11 @@ private:
 	
 public:
 	virtual void OnInitialUpdate();
+
+	void		Closed_Edit();
+	afx_msg void OnTileEdit();
+	afx_msg void OnObjectEdit();
+	CButton m_TypeBut[2];
 };
 
 

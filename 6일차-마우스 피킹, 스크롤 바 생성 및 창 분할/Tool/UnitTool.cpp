@@ -5,6 +5,8 @@
 #include "Tool.h"
 #include "UnitTool.h"
 #include "afxdialogex.h"
+#include	"MyForm.h"
+#include	"EditMgr.h"
 
 
 // CUnitTool 대화 상자입니다.
@@ -97,6 +99,7 @@ void CUnitTool::OnPush()
 	UpdateData(FALSE);
 
 	m_ListBox.SelectString(0, pUnit->strName);
+
 
 }
 
@@ -372,3 +375,22 @@ void CUnitTool::OnDelete()
 }
 
 
+
+
+void CUnitTool::OnOK()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+
+	CDialog::OnOK();
+
+	for (auto& iter : m_pOwner->m_TypeBut)
+	{
+		iter.SetCheck(FALSE);
+	}
+
+	m_pOwner->m_TypeBut[1].SetCheck(TRUE);
+
+	CEditMgr::Get_Instance()->Set_EType(EDIT_OBJECT);
+	
+}

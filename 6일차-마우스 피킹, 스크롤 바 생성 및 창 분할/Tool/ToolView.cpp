@@ -15,6 +15,7 @@
 #include "TextureMgr.h"
 #include "MainFrm.h"
 #include "MiniView.h"
+#include	"EditMgr.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -114,6 +115,7 @@ void CToolView::OnInitialUpdate()
 	}
 
 	m_pTerrain->Set_MainView(this);
+	CEditMgr::Get_Instance()->Set_EType(EDIT_TILE);
 
 }
 
@@ -206,10 +208,15 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	int iSrc = m_pTerrain->Get_TileIndex({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f });
 
-	if (iSrc != -1)
+	if (CEditMgr::Get_Instance()->Get_EType() == EDIT_TILE)
 	{
-		m_pTerrain->Set_Index(iSrc);
+		if (iSrc != -1)
+		{
+			m_pTerrain->Set_Index(iSrc);
+		}
 	}
+
+
 
 	// Invalidate : 호출 시 윈도우에 WM_PAINT와 WM_ERASEBKGND 메세지를 발생 시킴, 이때 OnDraw함수를 다시 한번 호출
 	// 인자가 FALSE : WM_PAINT만 발생
@@ -237,7 +244,12 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 
 		if (iSrc != -1)
 		{
-			m_pTerrain->Add_Index(iSrc);
+			if (CEditMgr::Get_Instance()->Get_EType() == EDIT_OBJECT)
+			{
+				m_pTerrain->Set_Index(iSrc);
+			}
+			else
+				m_pTerrain->Add_Index(iSrc);
 		}
 		Invalidate(FALSE);
 
@@ -258,12 +270,17 @@ void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
 
 	CScrollView::OnRButtonDown(nFlags, point);
 
-	m_pTerrain->Tile_Change();
+	if (CEditMgr::Get_Instance()->Get_EType() == EDIT_TILE)
+	{
+		m_pTerrain->Tile_Change();
 
-	Invalidate(FALSE);
+		Invalidate(FALSE);
 
-	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
+		CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+		CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
 
-	pMiniView->Invalidate(FALSE);
+		pMiniView->Invalidate(FALSE);
+
+	}
+
 }

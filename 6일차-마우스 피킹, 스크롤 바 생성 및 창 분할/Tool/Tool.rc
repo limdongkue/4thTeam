@@ -12,6 +12,7 @@
 #endif
 #include "afxres.h"
 #include "verrsrc.h"
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -22,7 +23,6 @@
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 #pragma code_page(949)
-#endif
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@ BEGIN
     "#endif\r\n"
     "#include ""afxres.h""\r\n"
     "#include ""verrsrc.h""\r\n"
-	"#endif\r\n"
+    "#endif\r\n"
     "\0"
 END
 
@@ -72,9 +72,7 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\Tool.ico"
-
 IDR_ToolTYPE            ICON                    "res\\ToolDoc.ico"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -82,7 +80,6 @@ IDR_ToolTYPE            ICON                    "res\\ToolDoc.ico"
 //
 
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -190,7 +187,7 @@ IDD_MYFORM DIALOGEX 0, 0, 320, 200
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 9, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    PUSHBUTTON      "UNITTOOL",IDC_BUTTON1,7,6,82,35
+    PUSHBUTTON      "UNITTOOL",IDC_BUTTON1,89,6,82,35
     PUSHBUTTON      "MAPTOOL",IDC_BUTTON5,7,48,82,35
     CONTROL         "오브젝트 에디팅",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,16,26,64,10
     CONTROL         "타일 에디팅",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | WS_GROUP,16,14,51,10
@@ -340,7 +337,7 @@ BEGIN
         BOTTOMMARGIN, 169
     END
 END
-    // APSTUDIO_INVOKED
+#endif    // APSTUDIO_INVOKED
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -22,6 +22,7 @@
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 #pragma code_page(949)
+#endif
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -41,6 +42,7 @@ BEGIN
     "#endif\r\n"
     "#include ""afxres.h""\r\n"
     "#include ""verrsrc.h""\r\n"
+	"#endif\r\n"
     "\0"
 END
 
@@ -190,6 +192,9 @@ FONT 9, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     PUSHBUTTON      "UNITTOOL",IDC_BUTTON1,7,6,82,35
     PUSHBUTTON      "MAPTOOL",IDC_BUTTON5,7,48,82,35
+    CONTROL         "오브젝트 에디팅",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,16,26,64,10
+    CONTROL         "타일 에디팅",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | WS_GROUP,16,14,51,10
+    PUSHBUTTON      "BattleObjEditor",IDC_BUTTON2,7,95,82,38
 END
 
 IDD_UNITTOOL DIALOGEX 0, 0, 320, 200
@@ -199,9 +204,9 @@ FONT 9, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "확인",IDOK,263,179,50,14
     EDITTEXT        IDC_EDIT1,51,7,49,24,ES_AUTOHSCROLL
-    LTEXT           "이름",IDC_STATIC,20,12,11,8
-    LTEXT           "체력",IDC_STATIC,20,40,11,8
-    LTEXT           "공격력",IDC_STATIC,20,70,17,8
+    LTEXT           "이름",IDC_STATIC,14,14,18,8
+    LTEXT           "체력",IDC_STATIC,15,41,17,8
+    LTEXT           "공격력",IDC_STATIC,15,70,23,8
     EDITTEXT        IDC_EDIT2,50,33,49,24,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT3,50,63,49,24,ES_AUTOHSCROLL
     LISTBOX         IDC_LIST1,108,7,88,113,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP

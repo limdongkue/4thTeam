@@ -195,16 +195,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractFactory.h" />
+    <ClInclude Include="BattleUnit.h" />
     <ClInclude Include="Device.h" />
-    <ClInclude Include="DlgTab1.h" />
-    <ClInclude Include="DlgTab2.h" />
-    <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="MapTool.h" />
+<ClInclude Include="DlgTab1.h" />
+<ClInclude Include="DlgTab2.h" />
+<ClInclude Include="EditMgr.h" />
+<ClInclude Include="MainFrm.h" />
+  <ClInclude Include="MapTool.h" />
     <ClInclude Include="MiniView.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="MultiTexture.h" />
     <ClInclude Include="MyForm.h" />
     <ClInclude Include="Obj.h" />
     <ClInclude Include="ObjMgr.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SingleTexture.h" />
     <ClInclude Include="stdafx.h" />
@@ -218,16 +222,20 @@
     <ClInclude Include="UnitTool.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BattleUnit.cpp" />
     <ClCompile Include="Device.cpp" />
-    <ClCompile Include="DlgTab1.cpp" />
+<ClCompile Include="DlgTab1.cpp" />
     <ClCompile Include="DlgTab2.cpp" />
-    <ClCompile Include="MainFrm.cpp" />
+<ClCompile Include="EditMgr.cpp" />
+<ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="MiniView.cpp" />
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MultiTexture.cpp" />
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="Obj.cpp" />
     <ClCompile Include="ObjMgr.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SingleTexture.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -35,4 +35,3 @@
 #define _APS_NEXT_CONTROL_VALUE         1018
 #define _APS_NEXT_SYMED_VALUE           315
 #endif
-#endif

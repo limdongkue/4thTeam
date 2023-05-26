@@ -3,7 +3,7 @@
 #include "Include.h"
 
 // CUnitTool 대화 상자입니다.
-
+class CMyForm;
 class CUnitTool : public CDialog
 {
 	DECLARE_DYNAMIC(CUnitTool)
@@ -42,4 +42,6 @@ public:
 
 public:
 	map<CString, UNITDATA*>		m_mapUnitData;
+	CMyForm*		m_pOwner;
+	virtual void OnOK();
 };

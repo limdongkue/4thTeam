@@ -79,6 +79,7 @@ void CTerrain::Render()
 		
 		float	fX = pTexInfo->tImgInfo.Width / 2.f;
 		float	fY = pTexInfo->tImgInfo.Height / 2.f;
+
 			
 		// 이미지에 행렬을 반영
 		CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);

@@ -340,7 +340,7 @@ BEGIN
         BOTTOMMARGIN, 169
     END
 END
-#endif    // APSTUDIO_INVOKED
+    // APSTUDIO_INVOKED
 
 
 /////////////////////////////////////////////////////////////////////////////

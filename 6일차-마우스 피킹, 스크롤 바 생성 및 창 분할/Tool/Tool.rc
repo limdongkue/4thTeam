@@ -9,7 +9,6 @@
 //
 #ifndef APSTUDIO_INVOKED
 #include "targetver.h"
-#endif
 #include "afxres.h"
 #include "verrsrc.h"
 #endif

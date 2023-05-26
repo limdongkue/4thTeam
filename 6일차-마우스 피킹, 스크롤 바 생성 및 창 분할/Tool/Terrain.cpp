@@ -22,6 +22,12 @@ HRESULT CTerrain::Initialize(void)
 		return E_FAIL;
 	}
 
+	if (FAILED(CTextureMgr::Get_Instance()->Insert_Texture(L"../Image/Texture/Back/TileSelect/0.png", TEX_SINGLE, L"Terrain_Select")))
+	{
+		AfxMessageBox(L"TileTexture Create Failed");
+		return E_FAIL;
+	}
+
 	for (int i = 0; i < TILEY; ++i)
 	{
 		for (int j = 0; j < TILEX; ++j)
@@ -108,7 +114,7 @@ void CTerrain::Render()
 	for (auto& iter : m_iSelectedList)
 	{
 		D3DXMatrixIdentity(&matWorld);
-		D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
+		D3DXMatrixScaling(&matScale, 2.f, 2.f, 1.f);
 		D3DXMatrixTranslation(&matTrans,
 			m_vecTile[iter]->vPos.x - m_pMainView->GetScrollPos(0),
 			m_vecTile[iter]->vPos.y - m_pMainView->GetScrollPos(1),
@@ -118,7 +124,7 @@ void CTerrain::Render()
 
 		Set_Ratio(&matWorld, fX, fY);
 
-		const TEXINFO*	pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Terrain", L"Tile", m_vecTile[iter]->byDrawID);
+		const TEXINFO*	pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Terrain_Select");
 
 		float fX = pTexInfo->tImgInfo.Width / 2.f;
 		float fY = pTexInfo->tImgInfo.Height / 2.f;
@@ -130,7 +136,7 @@ void CTerrain::Render()
 			nullptr,							// 출력할 이미지 영역에 대한 Rect 주소, null인 경우 이미지의 0, 0 기준으로 출력
 			&D3DXVECTOR3(fX, fY, 0.f),			// 출력할 이미지의 중심축에 대한 vector3 주소, null인 경우 이미지의 0, 0이 중심 좌표
 			nullptr,							// 위치 좌표에 대한 vector3 주소, null인 경우 스크린 상의 0, 0좌표 출력
-			D3DCOLOR_ARGB(100, 0, 255, 0)); // 출력할 이미지와 섞을 색상 값, 0xffffffff를 넘겨주면 원본 색상 유지
+			D3DCOLOR_ARGB(255, 255, 255, 255)); // 출력할 이미지와 섞을 색상 값, 0xffffffff를 넘겨주면 원본 색상 유지
 
 	}
 
@@ -168,6 +174,36 @@ void CTerrain::Mini_Render(void)
 			nullptr,
 			D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
+
+	for (auto& iter : m_iSelectedList)
+	{
+		D3DXMatrixIdentity(&matWorld);
+		D3DXMatrixScaling(&matScale, 2.f, 2.f, 1.f);
+		D3DXMatrixTranslation(&matTrans,
+			m_vecTile[iter]->vPos.x - m_pMainView->GetScrollPos(0),
+			m_vecTile[iter]->vPos.y - m_pMainView->GetScrollPos(1),
+			0.f);
+
+		matWorld = matScale * matTrans;
+
+		Set_Ratio(&matWorld, 0.3f, 0.3f);
+
+		const TEXINFO*	pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Terrain_Select");
+
+		float fX = pTexInfo->tImgInfo.Width / 2.f;
+		float fY = pTexInfo->tImgInfo.Height / 2.f;
+
+		// 이미지에 행렬을 반영
+		CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
+
+		CDevice::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture,
+			nullptr,							// 출력할 이미지 영역에 대한 Rect 주소, null인 경우 이미지의 0, 0 기준으로 출력
+			&D3DXVECTOR3(fX, fY, 0.f),			// 출력할 이미지의 중심축에 대한 vector3 주소, null인 경우 이미지의 0, 0이 중심 좌표
+			nullptr,							// 위치 좌표에 대한 vector3 주소, null인 경우 스크린 상의 0, 0좌표 출력
+			D3DCOLOR_ARGB(255, 255, 255, 255)); // 출력할 이미지와 섞을 색상 값, 0xffffffff를 넘겨주면 원본 색상 유지
+
+	}
+
 }
 
 void CTerrain::Release(void)

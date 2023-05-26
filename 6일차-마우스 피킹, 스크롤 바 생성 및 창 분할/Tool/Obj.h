@@ -30,6 +30,8 @@ public:
 protected:
 	tagFrame	m_tFrame;
 	INFO		m_tInfo;
+	IMGPATH		m_tImgPath;
+
 
 	bool		m_bDead;
 
